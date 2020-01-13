@@ -1,4 +1,7 @@
 from django.db import models
+from django.http import HttpResponse
+from django.http import HttpRequest
+from django.views.generic import View
 
 # Create your models here.
 class Usuario(models.Model):
@@ -13,6 +16,8 @@ class Usuario(models.Model):
     def __str__(self):
         template = '{0.cedula}, {0.nombres}, {0.apellidos}, {0.email}, {0.telefono}, {0.usuario}, {0.contrasena}'
         return template.format(self)
+    def get(self, request):
+        return HttpResponse(HttpRequest(request))
 
 
 class Mascota(models.Model):
@@ -27,4 +32,12 @@ class Mascota(models.Model):
     def __str__(self):
         template = '{0.id_mascota}, {0.nombre}, {0.raza}, {0.descripcion}, {0.propietario}, {0.en_adopcion}, {0.esta_perdida}'
         return template.format(self)
+    def get(self, request):
+        return HttpResponse(HttpRequest(request))
+    def post(self,request):
 
+        return HttpResponse(self)
+
+    def delete(self, request, response):
+
+        return HttpResponse("Se ha eliminado")
