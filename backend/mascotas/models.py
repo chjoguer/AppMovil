@@ -16,8 +16,9 @@ class Usuario(models.Model):
     def __str__(self):
         template = '{0.cedula}, {0.nombres}, {0.apellidos}, {0.email}, {0.telefono}, {0.usuario}'
         return template.format(self)
-    def get(self, request):
-        return HttpResponse(HttpRequest(request))
+    
+    '''def get(self, request):
+        return HttpResponse(HttpRequest(request))'''
 
 
 class Mascota(models.Model):
@@ -32,7 +33,10 @@ class Mascota(models.Model):
     def __str__(self):
         template = '{0.id_mascota}, {0.nombre}, {0.raza}, {0.descripcion}, {0.propietario}, {0.en_adopcion}, {0.esta_perdida}'
         return template.format(self)
-    def get(self, request):
+    
+    
+    
+    '''def get(self, request):
         return HttpResponse(HttpRequest(request))
     def post(self,request):
 
@@ -40,4 +44,4 @@ class Mascota(models.Model):
 
     def delete(self, request, response):
 
-        return HttpResponse("Se ha eliminado")
+        return HttpResponse("Se ha eliminado")'''
