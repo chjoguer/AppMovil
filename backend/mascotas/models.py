@@ -14,7 +14,7 @@ class Usuario(models.Model):
     contrasena = models.CharField(max_length=15)
 
     def __str__(self):
-        template = '{0.cedula}, {0.nombres}, {0.apellidos}, {0.email}, {0.telefono}, {0.usuario}, {0.contrasena}'
+        template = '{0.cedula}, {0.nombres}, {0.apellidos}, {0.email}, {0.telefono}, {0.usuario}'
         return template.format(self)
     def get(self, request):
         return HttpResponse(HttpRequest(request))
