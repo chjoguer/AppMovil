@@ -96,7 +96,30 @@ public class MascotaPerdidaFormularioFragment extends Fragment {
 
                     }
                 });
+
     }
+    public void limpiarRegistro(View view){
+        Button limpiar = (Button)view.findViewById(R.id.limpiar);
+        final EditText nombre   = (EditText)view.findViewById(R.id.nombre);
+        final EditText raza   = (EditText)view.findViewById(R.id.raza);
+        final EditText enAdopcion   = (EditText)view.findViewById(R.id.perdido);
+        final EditText descripcion   = (EditText)view.findViewById(R.id.descripcion);
+        final ImageView imgFile   = (ImageView) view.findViewById(R.id.image);
+        limpiar.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        nombre.setText("");
+                        raza.setText("");
+                        enAdopcion.setText("");
+                        descripcion.setText("");
+                        imgFile.setImageResource(R.drawable.ic_menu_gallery);
+                    }
+                });
+
+
+        }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,13 +137,14 @@ public class MascotaPerdidaFormularioFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_perdidaform, container, false);
         foto_gallery = (ImageView) view.findViewById(R.id.image);
-                foto_gallery.setOnClickListener(new View.OnClickListener() {
+        foto_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openGallery();
             }
         });
         registratMascotaPerdida(view);
+        limpiarRegistro(view);
 
         return view;
     }
