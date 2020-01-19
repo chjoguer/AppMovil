@@ -118,11 +118,11 @@ public class ListaAdoptadoFragment extends Fragment {
     }
 
     private void llenarLista() {
-        listaPersonaje.add(new Mascota("Perla","Perrita en adopcion muy cariniosa siempre le gusta pasar con el duenio",R.drawable.perro1));
-        listaPersonaje.add(new Mascota("Nino","Perro en adopcion muy bien educado ideal para cuidar la casa",R.drawable.perro2));
-        listaPersonaje.add(new Mascota("Tite","Perro para la compania de ninios demasiado carinioso y jugueton",R.drawable.perro3));
-        listaPersonaje.add(new Mascota("Titina","Perrita en adopcion muy cariniosa siempre le gusta pasar con el duenio",R.drawable.perro4));
-        listaPersonaje.add(new Mascota("Princesa","Perrita en adopcion muy cariniosa siempre le gusta pasar con el duenio ",R.drawable.perro5));
+        listaPersonaje.add(new Mascota("Perla","Perrita en adopción jugetona le gusta morder las medias para que jueguen con ella",R.drawable.perro1));
+        listaPersonaje.add(new Mascota("Nino","Perro en adopción muy bien educado ideal para cuidar la casa",R.drawable.perro2));
+        listaPersonaje.add(new Mascota("Tite","Perro para la compañía de niñios demasiado cariñoso y juguetón",R.drawable.perro3));
+        listaPersonaje.add(new Mascota("Titina","Perrita dormilona le gusta llamar la atención llorando cuando no la miran",R.drawable.perro4));
+        listaPersonaje.add(new Mascota("Princesa","Perrita en adopción muy cariñosa siempre le gusta pasar con los dueños ",R.drawable.pug));
 
     }
 

@@ -136,8 +136,8 @@ public class ListaPerididoFragment extends  Fragment{
 
         private void llenarLista() {
             /*Aqui debe de hacerce el get*/
-            listaPerdido.add(new Mascota("Vaquita", "Perrita doberman de color blanco con machas de color negro 4 meses de edad", R.drawable.perro1));
-            listaPerdido.add(new Mascota("Pelusa", "Perro snowser de 2 anios de edad de color totalmente negro con machas de color cafe en la cara", R.drawable.perro2));
+            listaPerdido.add(new Mascota("Vaquita", "Chihuahua perdido de color miel con manchas amarillas tenia un collar de color cafe", R.drawable.chihuahua));
+            listaPerdido.add(new Mascota("Pelusa", "Pastor perdido camina un poco lento debido a la edad es de colo cafe y con orejas de grandes de color negro", R.drawable.pastor));
         }
         // TODO: Rename method, update argument and hook method into UI event
         public void onButtonPressed(Uri uri) {
