@@ -103,10 +103,10 @@ public class MasoctaAdopcionFormularioFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        nombre.setText("");
-                        raza.setText("");
-                        enAdopcion.setText("");
-                        descripcion.setText("");
+                        nombre.setText("Nombre");
+                        raza.setText("Raza");
+                        enAdopcion.setText("En Adopción");
+                        descripcion.setText("Descripción");
                         imgFile.setImageResource(R.drawable.ic_menu_gallery);
                     }
                 });
