@@ -96,9 +96,9 @@ public class ContenedorFragment extends Fragment {
 
     private void llenarViewPager(ViewPager viewPager) {
         SeccionesAdapter adapter=new SeccionesAdapter(getFragmentManager());
-        adapter.addFragment(new GreenFragment(),"VERDE");
+        adapter.addFragment(new ProfileFragment(),"VERDE");
         adapter.addFragment(new ListaAdoptadoFragment(),"LISTA");
-        adapter.addFragment(new RedFragment(),"ROJO");
+        adapter.addFragment(new MascotaPerdidaFormularioFragment(),"ROJO");
 
         viewPager.setAdapter(adapter);
     }

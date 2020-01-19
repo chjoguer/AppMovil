@@ -4,32 +4,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import co.quindio.sena.navigationdrawerejemplo.R;
-import co.quindio.sena.navigationdrawerejemplo.adapters.PersonajesAdapter;
 import co.quindio.sena.navigationdrawerejemplo.clases.Mascota;
-import co.quindio.sena.navigationdrawerejemplo.clases.PersonajeVo;
+
+import static android.app.Activity.RESULT_OK;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ListaAdoptadoFragment.OnFragmentInteractionListener} interface
+ * {@link MasoctaAdopcionFormularioFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ListaAdoptadoFragment#newInstance} factory method to
+ * Use the {@link MasoctaAdopcionFormularioFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListaAdoptadoFragment extends Fragment {
+public class MasoctaAdopcionFormularioFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -38,14 +40,12 @@ public class ListaAdoptadoFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Button entry;
-
+    public ArrayList<Mascota> mascotasAdopcion;
     private OnFragmentInteractionListener mListener;
-
-    RecyclerView recyclerPersonajes;
-    ArrayList<Mascota> listaPersonaje;
-
-    public ListaAdoptadoFragment() {
+    ImageView foto_gallery;
+    private static final int PICK_IMAGE = 100;
+    Uri imageUri;
+    public MasoctaAdopcionFormularioFragment() {
         // Required empty public constructor
     }
 
@@ -55,16 +55,42 @@ public class ListaAdoptadoFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ListaAdoptadoFragment.
+     * @return A new instance of fragment MasoctaAdopcionFormularioFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ListaAdoptadoFragment newInstance(String param1, String param2) {
-        ListaAdoptadoFragment fragment = new ListaAdoptadoFragment();
+    public static MasoctaAdopcionFormularioFragment newInstance(String param1, String param2) {
+        MasoctaAdopcionFormularioFragment fragment = new MasoctaAdopcionFormularioFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+    public void registratMascotaAdoptada(View view){
+        Button mButton = (Button)view.findViewById(R.id.registar);
+        final EditText nombre   = (EditText)view.findViewById(R.id.nombre);
+        final EditText raza   = (EditText)view.findViewById(R.id.raza);
+        final EditText enAdopcion   = (EditText)view.findViewById(R.id.adopcion);
+        final EditText descripcion   = (EditText)view.findViewById(R.id.descripcion);
+        final ImageView imgFile   = (ImageView) view.findViewById(R.id.image);
+
+        mButton.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View view)
+                    {
+                        Log.v("EditText", nombre.getText().toString());
+                        Log.v("EditText", raza.getText().toString());
+                        Log.v("EditText", enAdopcion.getText().toString());
+                        Log.v("EditText", descripcion.getText().toString());
+
+                        mascotasAdopcion.add(new Mascota(nombre.getText().toString(),descripcion.getText().toString(),imgFile.getId()));
+                        Log.v("EditText", mascotasAdopcion.toString());
+                        Toast.makeText(getContext(),"Se ha registrado correctamente...",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
     }
 
     @Override
@@ -74,58 +100,28 @@ public class ListaAdoptadoFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        mascotasAdopcion= new ArrayList<>();
+    }
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View vista=inflater.inflate(R.layout.fragment_lista_personajes, container, false);
-
-        listaPersonaje=new ArrayList<>();
-        recyclerPersonajes= (RecyclerView) vista.findViewById(R.id.recyclerId);
-        recyclerPersonajes.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-        llenarLista();
-        PersonajesAdapter adapter=new PersonajesAdapter(listaPersonaje);
-        adapter.setOnClickListener(new View.OnClickListener() {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_adoptaform, container, false);
+        foto_gallery = (ImageView) view.findViewById(R.id.image);
+        registratMascotaAdoptada(view);
+        foto_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(),"Abriendo prefil del dueño",Toast.LENGTH_SHORT).show();
-
-                //setContentView(R.layout.facebook);
-                //FACEBOOK
-                Uri uri = Uri.parse("https://www.facebook.com/groups/2205041203140120/");
-                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
-                try{
-                    startActivity(intent);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-
-
-
-                Log.v("EditText", "whatsaap!!");
-
-
+            public void onClick(View v) {
+                openGallery();
             }
         });
-        recyclerPersonajes.setAdapter(adapter);
-
-
-        return vista;
+        return view ;
     }
-
-    private void llenarLista() {
-        listaPersonaje.add(new Mascota("Perla","Perrita en adopcion muy cariniosa siempre le gusta pasar con el duenio",R.drawable.perro1));
-        listaPersonaje.add(new Mascota("Nino","Perro en adopcion muy bien educado ideal para cuidar la casa",R.drawable.perro2));
-        listaPersonaje.add(new Mascota("Tite","Perro para la compania de ninios demasiado carinioso y jugueton",R.drawable.perro3));
-        listaPersonaje.add(new Mascota("Titina","Perrita en adopcion muy cariniosa siempre le gusta pasar con el duenio",R.drawable.perro4));
-        listaPersonaje.add(new Mascota("Princesa","Perrita en adopcion muy cariniosa siempre le gusta pasar con el duenio ",R.drawable.perro5));
-
-    }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -142,6 +138,13 @@ public class ListaAdoptadoFragment extends Fragment {
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
+        }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            imageUri = data.getData();
+            foto_gallery.setImageURI(imageUri);
         }
     }
 

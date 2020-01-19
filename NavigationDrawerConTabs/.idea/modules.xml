@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Estados-DAW-NavigationDrawerConTabs.iml" filepath="$PROJECT_DIR$/Estados-DAW-NavigationDrawerConTabs.iml" />
       <module fileurl="file://$PROJECT_DIR$/NavigationDrawerConTabs.iml" filepath="$PROJECT_DIR$/NavigationDrawerConTabs.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/NavigationDrawerConTabs-app.iml" filepath="$PROJECT_DIR$/app/NavigationDrawerConTabs-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

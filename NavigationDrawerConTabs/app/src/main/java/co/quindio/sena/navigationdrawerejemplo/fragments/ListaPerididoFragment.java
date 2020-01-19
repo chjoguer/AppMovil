@@ -1,15 +1,23 @@
 package co.quindio.sena.navigationdrawerejemplo.fragments;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.PhoneNumberUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
+import java.io.Console;
 import java.util.ArrayList;
 
 import co.quindio.sena.navigationdrawerejemplo.R;
@@ -36,6 +44,27 @@ public class ListaPerididoFragment extends  Fragment{
         public ListaPerididoFragment() {
             // Required empty public constructor
         }
+        public  void Onwhatsapp(Button contactar,View view) {
+
+            contactar.setOnClickListener(
+                    new View.OnClickListener()
+                    {
+                        public void onClick(View view)
+                        {
+                            Intent _intencion = new Intent("android.intent.action.MAIN");
+                            _intencion.setComponent(new ComponentName("com.whatsapp","com.whatsapp.Conversation"));
+                            _intencion.putExtra("jid", PhoneNumberUtils.stripSeparators("593" + "0998571080")+"@s.whatsapp.net");
+                            startActivity(_intencion);
+
+
+                            Log.v("EditText", "whatsaap!!");
+
+                        }
+                    });
+
+
+        }
+
 
         /**
          * Use this factory method to create a new instance of
@@ -68,6 +97,7 @@ public class ListaPerididoFragment extends  Fragment{
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View vista=inflater.inflate(R.layout.fragment_lista_peridido, container, false);
+            Button contactar = (Button) vista.findViewById(R.id.contactar);
 
             listaPerdido=new ArrayList<>();
             recyclerPerdido= (RecyclerView) vista.findViewById(R.id.recyclerId);
@@ -76,7 +106,30 @@ public class ListaPerididoFragment extends  Fragment{
             llenarLista();
 
             PersonajesAdapter adapter=new PersonajesAdapter(listaPerdido);
+            adapter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                        Toast.makeText(getContext(),"Abriendo prefil del dueño",Toast.LENGTH_SHORT).show();
+
+                        //setContentView(R.layout.facebook);
+                        //FACEBOOK
+                        Uri uri = Uri.parse("https://www.facebook.com/cjguerrero.garcia");
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                        try{
+                            startActivity(intent);
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+
+
+
+                        Log.v("EditText", "whatsaap!!");
+
+
+                }
+            });
             recyclerPerdido.setAdapter(adapter);
+
 
             return vista;
         }

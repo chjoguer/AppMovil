@@ -17,16 +17,16 @@ import android.view.MenuItem;
 
 import co.quindio.sena.navigationdrawerejemplo.clases.Utilidades;
 import co.quindio.sena.navigationdrawerejemplo.fragments.ContenedorFragment;
-import co.quindio.sena.navigationdrawerejemplo.fragments.FormularioFragment;
-import co.quindio.sena.navigationdrawerejemplo.fragments.GreenFragment;
+import co.quindio.sena.navigationdrawerejemplo.fragments.MasoctaAdopcionFormularioFragment;
+import co.quindio.sena.navigationdrawerejemplo.fragments.MascotaPerdidaFormularioFragment;
+import co.quindio.sena.navigationdrawerejemplo.fragments.ProfileFragment;
 import co.quindio.sena.navigationdrawerejemplo.fragments.ListaAdoptadoFragment;
 import co.quindio.sena.navigationdrawerejemplo.fragments.ListaPerididoFragment;
-import co.quindio.sena.navigationdrawerejemplo.fragments.RedFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        RedFragment.OnFragmentInteractionListener,GreenFragment.OnFragmentInteractionListener,
-        FormularioFragment.OnFragmentInteractionListener,ContenedorFragment.OnFragmentInteractionListener,
+        MascotaPerdidaFormularioFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener,
+        MasoctaAdopcionFormularioFragment.OnFragmentInteractionListener,ContenedorFragment.OnFragmentInteractionListener,
         ListaAdoptadoFragment.OnFragmentInteractionListener,ListaPerididoFragment.OnFragmentInteractionListener{
 
     @Override
@@ -109,13 +109,13 @@ public class MainActivity extends AppCompatActivity
 
 
         if (id == R.id.nav_camera) {
-            miFragment=new FormularioFragment();
+            miFragment=new MasoctaAdopcionFormularioFragment();
             fragmentSeleccionado=true;
         } else if (id == R.id.nav_gallery) {
-            miFragment=new RedFragment();
+            miFragment=new MascotaPerdidaFormularioFragment();
             fragmentSeleccionado=true;
         } else if (id == R.id.nav_slideshow) {
-            miFragment=new GreenFragment();
+            miFragment=new ProfileFragment();
             fragmentSeleccionado=true;
         } else if (id == R.id.nav_share) {
             miFragment=new ContenedorFragment();

@@ -6,12 +6,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import co.quindio.sena.navigationdrawerejemplo.R;
+import co.quindio.sena.navigationdrawerejemplo.clases.Mascota;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -19,12 +26,12 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GreenFragment.OnFragmentInteractionListener} interface
+ * {@link MascotaPerdidaFormularioFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link GreenFragment#newInstance} factory method to
+ * Use the {@link MascotaPerdidaFormularioFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GreenFragment extends Fragment {
+public class MascotaPerdidaFormularioFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,14 +40,13 @@ public class GreenFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-
+    ArrayList<Mascota> mascotasPerdidas;
     ImageView foto_gallery;
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
-    public GreenFragment() {
+    private OnFragmentInteractionListener mListener;
+
+    public MascotaPerdidaFormularioFragment() {
         // Required empty public constructor
     }
 
@@ -50,16 +56,46 @@ public class GreenFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment GreenFragment.
+     * @return A new instance of fragment MascotaPerdidaFormularioFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static GreenFragment newInstance(String param1, String param2) {
-        GreenFragment fragment = new GreenFragment();
+    public static MascotaPerdidaFormularioFragment newInstance(String param1, String param2) {
+        MascotaPerdidaFormularioFragment fragment = new MascotaPerdidaFormularioFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    public void registratMascotaPerdida(View view){
+        Button mButton = (Button)view.findViewById(R.id.registar);
+        final EditText nombre   = (EditText)view.findViewById(R.id.nombre);
+        final EditText raza   = (EditText)view.findViewById(R.id.raza);
+        final EditText enAdopcion   = (EditText)view.findViewById(R.id.perdido);
+        final EditText descripcion   = (EditText)view.findViewById(R.id.descripcion);
+        final ImageView imgFile   = (ImageView) view.findViewById(R.id.image);
+
+        mButton.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View view)
+                    {
+                        Log.v("EditText", nombre.getText().toString());
+                        Log.v("EditText", raza.getText().toString());
+                        Log.v("EditText", enAdopcion.getText().toString());
+                        Log.v("EditText", descripcion.getText().toString());
+
+                        mascotasPerdidas.add(new Mascota(nombre.getText().toString(),descripcion.getText().toString(),imgFile.getId()));
+                        Log.v("EditText", mascotasPerdidas.toString());
+                        Toast.makeText(getContext(),"Se ha registrado correctamente...",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
     }
 
     @Override
@@ -69,23 +105,23 @@ public class GreenFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+         mascotasPerdidas= new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        View view =inflater.inflate(R.layout.fragment_green, container, false);
+        View view =inflater.inflate(R.layout.fragment_perdidaform, container, false);
         foto_gallery = (ImageView) view.findViewById(R.id.image);
-
-        foto_gallery.setOnClickListener(new View.OnClickListener() {
+                foto_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openGallery();
             }
         });
+        registratMascotaPerdida(view);
+
         return view;
     }
 
@@ -106,10 +142,6 @@ public class GreenFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
-    private void openGallery(){
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, PICK_IMAGE);
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
@@ -117,6 +149,7 @@ public class GreenFragment extends Fragment {
             foto_gallery.setImageURI(imageUri);
         }
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
