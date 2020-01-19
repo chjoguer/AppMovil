@@ -9,7 +9,7 @@
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_priority_high_black_24dp"
-            android:title="Registrar peridda" />
+            android:title="Registrar perdida" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_person_black_24dp"
@@ -21,7 +21,7 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="TABS" />
+                android:title="Compartir" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_find_in_page_black_24dp"
