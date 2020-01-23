@@ -16,9 +16,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import co.quindio.sena.navigationdrawerejemplo.R;
 import co.quindio.sena.navigationdrawerejemplo.clases.Mascota;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -45,6 +51,8 @@ public class MasoctaAdopcionFormularioFragment extends Fragment {
     ImageView foto_gallery;
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
+
+
     public MasoctaAdopcionFormularioFragment() {
         // Required empty public constructor
     }
@@ -83,7 +91,7 @@ public class MasoctaAdopcionFormularioFragment extends Fragment {
                         Log.v("EditText", raza.getText().toString());
                         Log.v("EditText", enAdopcion.getText().toString());
                         Log.v("EditText", descripcion.getText().toString());
-
+                        createMascotas("M-101",nombre.getText().toString(),raza.getText().toString(),descripcion.getText().toString(),true,false,1);
                         mascotasAdopcion.add(new Mascota(nombre.getText().toString(),descripcion.getText().toString(),imgFile.getId()));
                         Log.v("EditText", mascotasAdopcion.toString());
                         Toast.makeText(getContext(),"Se ha registrado correctamente...",Toast.LENGTH_SHORT).show();
@@ -111,6 +119,39 @@ public class MasoctaAdopcionFormularioFragment extends Fragment {
                     }
                 });
     }
+    private void createMascotas(String id,String nombre,String raza,String descripcion,boolean esAdopcion,boolean estaPerdida,Integer duenio){
+        //Mascota mascota = new Mascota("M-0055","Ranchita","coker","Coker de color negro con blanco suele pasas mucgo tiempo dormido",true,false,1);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8787/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        PostMascotas jsonPlaceHolderApi = retrofit.create(PostMascotas.class);
+
+        Call<List<Mascota>> call = jsonPlaceHolderApi.createPost(id,nombre,raza,descripcion,esAdopcion,estaPerdida,duenio);
+        call.enqueue(new Callback<List<Mascota>>() {
+            @Override
+            public void onResponse(Call<List<Mascota>> call, Response<List<Mascota>> response) {
+                if(!response.isSuccessful()){
+                    Toast.makeText(getContext(),"Codigo: "+response.code(),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                List<Mascota> mascotas = response.body();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Mascota>>call, Throwable t) {
+                Toast.makeText(getContext(),"Mensaje: "+t.getMessage(),Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
