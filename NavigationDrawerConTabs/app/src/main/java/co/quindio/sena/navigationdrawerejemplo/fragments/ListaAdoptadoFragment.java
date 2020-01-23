@@ -11,15 +11,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import co.quindio.sena.navigationdrawerejemplo.R;
 import co.quindio.sena.navigationdrawerejemplo.adapters.PersonajesAdapter;
 import co.quindio.sena.navigationdrawerejemplo.clases.Mascota;
 import co.quindio.sena.navigationdrawerejemplo.clases.PersonajeVo;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,6 +84,75 @@ public class ListaAdoptadoFragment extends Fragment {
 
     }
 
+    private void getPosts(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8787/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GetMascotas jsonPlaceHolderApi = retrofit.create(GetMascotas.class);
+
+        Call<List<Mascota>> call = jsonPlaceHolderApi.getMascotas();
+
+        call.enqueue(new Callback<List<Mascota>>() {
+            @Override
+            public void onResponse(Call<List<Mascota>> call, Response<List<Mascota>> response) {
+
+                if(!response.isSuccessful()){
+                    Toast.makeText(getContext(),"Codigo: "+response.code(),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                List<Mascota> postsList = response.body();
+
+                for(Mascota post: postsList){
+                    String content = "";
+                    content += post.getNombre();
+                    if(content=="Tino")
+                          Log.v("EditText",post.getNombre() );
+
+                    listaPersonaje.add(new Mascota(post.getNombre(),post.getDescripcion(),R.drawable.perro4));
+                 //   Toast.makeText(getContext(),"Codigo: "+post.getNombre(),Toast.LENGTH_SHORT).show();
+
+                }
+                PersonajesAdapter adapter=new PersonajesAdapter(listaPersonaje);
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getContext(),"Abriendo prefil del dueño",Toast.LENGTH_SHORT).show();
+
+                        //setContentView(R.layout.facebook);
+                        //FACEBOOK
+                        Uri uri = Uri.parse("https://www.facebook.com/groups/2205041203140120/");
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                        try{
+                            startActivity(intent);
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+
+
+
+                        Log.v("EditText", "whatsaap!!");
+
+
+                    }
+                });
+                recyclerPersonajes.setAdapter(adapter);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Mascota>> call, Throwable t) {
+                Toast.makeText(getContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,42 +163,20 @@ public class ListaAdoptadoFragment extends Fragment {
         recyclerPersonajes.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        llenarLista();
-        PersonajesAdapter adapter=new PersonajesAdapter(listaPersonaje);
-        adapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(),"Abriendo prefil del dueño",Toast.LENGTH_SHORT).show();
+        //llenarLista();
+        getPosts();
 
-                //setContentView(R.layout.facebook);
-                //FACEBOOK
-                Uri uri = Uri.parse("https://www.facebook.com/groups/2205041203140120/");
-                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
-                try{
-                    startActivity(intent);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-
-
-
-                Log.v("EditText", "whatsaap!!");
-
-
-            }
-        });
-        recyclerPersonajes.setAdapter(adapter);
 
 
         return vista;
     }
 
-    private void llenarLista() {
-        listaPersonaje.add(new Mascota("Perla","Perrita en adopción jugetona le gusta morder las medias para que jueguen con ella",R.drawable.perro1));
-        listaPersonaje.add(new Mascota("Nino","Perro en adopción muy bien educado ideal para cuidar la casa",R.drawable.perro2));
-        listaPersonaje.add(new Mascota("Tite","Perro para la compañía de niñios demasiado cariñoso y juguetón",R.drawable.perro3));
-        listaPersonaje.add(new Mascota("Titina","Perrita dormilona le gusta llamar la atención llorando cuando no la miran",R.drawable.perro4));
-        listaPersonaje.add(new Mascota("Princesa","Perrita en adopción muy cariñosa siempre le gusta pasar con los dueños ",R.drawable.pug));
+    private void llenarLista(String nombre) {
+        listaPersonaje.add(new Mascota(nombre,"Perrita en adopción jugetona le gusta morder las medias para que jueguen con ella",R.drawable.perro1));
+        //listaPersonaje.add(new Mascota(nombre,"Perro en adopción muy bien educado ideal para cuidar la casa",R.drawable.perro2));
+       // listaPersonaje.add(new Mascota(nombre,"Perro para la compañía de niñios demasiado cariñoso y juguetón",R.drawable.perro3));
+     //   listaPersonaje.add(new Mascota(nombre,"Perrita dormilona le gusta llamar la atención llorando cuando no la miran",R.drawable.perro4));
+   //     listaPersonaje.add(new Mascota(nombre,"Perrita en adopción muy cariñosa siempre le gusta pasar con los dueños ",R.drawable.pug));
 
     }
 

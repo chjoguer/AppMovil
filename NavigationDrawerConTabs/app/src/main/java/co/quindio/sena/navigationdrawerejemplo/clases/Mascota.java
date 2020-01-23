@@ -8,12 +8,19 @@ public class Mascota {
     public boolean enAdopcion;
     public boolean estaPerdida;
     private int imagenId;
-
+    public Mascota(String nombre,String descripcion,boolean esAdopcion,boolean estaPerdida,int imagenId) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.imagenId = imagenId;
+        this.estaPerdida=estaPerdida;
+        this.enAdopcion=esAdopcion;
+    }
     public Mascota(String nombre,String descripcion,int imagenId) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.imagenId = imagenId;
     }
+
 
     public String getNombre() {
         return nombre;

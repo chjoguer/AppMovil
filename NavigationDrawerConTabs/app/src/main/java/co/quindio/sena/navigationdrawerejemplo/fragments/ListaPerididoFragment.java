@@ -19,11 +19,17 @@ import android.widget.Toast;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.List;
 
 import co.quindio.sena.navigationdrawerejemplo.R;
 import co.quindio.sena.navigationdrawerejemplo.adapters.PersonajesAdapter;
 import co.quindio.sena.navigationdrawerejemplo.clases.Mascota;
 import co.quindio.sena.navigationdrawerejemplo.clases.PersonajeVo;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListaPerididoFragment extends  Fragment{
 
@@ -92,23 +98,39 @@ public class ListaPerididoFragment extends  Fragment{
                 mParam2 = getArguments().getString(ARG_PARAM2);
             }
         }
+    private void getPosts(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8787/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View vista=inflater.inflate(R.layout.fragment_lista_peridido, container, false);
-            Button contactar = (Button) vista.findViewById(R.id.contactar);
+        GetMascotas jsonPlaceHolderApi = retrofit.create(GetMascotas.class);
 
-            listaPerdido=new ArrayList<>();
-            recyclerPerdido= (RecyclerView) vista.findViewById(R.id.recyclerId);
-            recyclerPerdido.setLayoutManager(new LinearLayoutManager(getContext()));
+        Call<List<Mascota>> call = jsonPlaceHolderApi.getMascotas();
 
-            llenarLista();
+        call.enqueue(new Callback<List<Mascota>>() {
+            @Override
+            public void onResponse(Call<List<Mascota>> call, Response<List<Mascota>> response) {
 
-            PersonajesAdapter adapter=new PersonajesAdapter(listaPerdido);
-            adapter.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                if(!response.isSuccessful()){
+                    Toast.makeText(getContext(),"Codigo: "+response.code(),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                List<Mascota> postsList = response.body();
+
+                for(Mascota post: postsList){
+                    String content = "";
+                        Toast.makeText(getContext(),"Codigo: "+post.isEstaPerdida(),Toast.LENGTH_SHORT).show();
+                        listaPerdido.add(new Mascota(post.getNombre(),post.getDescripcion(),R.drawable.perro3));
+
+                    //   Toast.makeText(getContext(),"Codigo: "+post.getNombre(),Toast.LENGTH_SHORT).show();
+
+                }
+                PersonajesAdapter adapter=new PersonajesAdapter(listaPerdido);
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         Toast.makeText(getContext(),"Abriendo prefil del dueño",Toast.LENGTH_SHORT).show();
 
                         //setContentView(R.layout.facebook);
@@ -126,9 +148,35 @@ public class ListaPerididoFragment extends  Fragment{
                         Log.v("EditText", "whatsaap!!");
 
 
-                }
-            });
-            recyclerPerdido.setAdapter(adapter);
+                    }
+                });
+                recyclerPerdido.setAdapter(adapter);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Mascota>> call, Throwable t) {
+                Toast.makeText(getContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+    }
+
+    @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View vista=inflater.inflate(R.layout.fragment_lista_peridido, container, false);
+            Button contactar = (Button) vista.findViewById(R.id.contactar);
+
+            listaPerdido=new ArrayList<>();
+            recyclerPerdido= (RecyclerView) vista.findViewById(R.id.recyclerId);
+            recyclerPerdido.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+            getPosts();
 
 
             return vista;
