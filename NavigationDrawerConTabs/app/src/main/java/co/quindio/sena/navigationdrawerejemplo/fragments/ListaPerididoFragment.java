@@ -113,7 +113,6 @@ public class ListaPerididoFragment extends  Fragment{
             public void onResponse(Call<List<Mascota>> call, Response<List<Mascota>> response) {
 
                 if(!response.isSuccessful()){
-                    Toast.makeText(getContext(),"Codigo: "+response.code(),Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -121,7 +120,6 @@ public class ListaPerididoFragment extends  Fragment{
 
                 for(Mascota post: postsList){
                     String content = "";
-                        Toast.makeText(getContext(),"Codigo: "+post.isEstaPerdida(),Toast.LENGTH_SHORT).show();
                         listaPerdido.add(new Mascota(post.getNombre(),post.getDescripcion(),R.drawable.perro3));
 
                     //   Toast.makeText(getContext(),"Codigo: "+post.getNombre(),Toast.LENGTH_SHORT).show();

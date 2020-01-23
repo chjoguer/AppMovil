@@ -99,7 +99,6 @@ public class ListaAdoptadoFragment extends Fragment {
             public void onResponse(Call<List<Mascota>> call, Response<List<Mascota>> response) {
 
                 if(!response.isSuccessful()){
-                    Toast.makeText(getContext(),"Codigo: "+response.code(),Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -108,8 +107,6 @@ public class ListaAdoptadoFragment extends Fragment {
                 for(Mascota post: postsList){
                     String content = "";
                     content += post.getNombre();
-                    if(content=="Tino")
-                          Log.v("EditText",post.getNombre() );
 
                     listaPersonaje.add(new Mascota(post.getNombre(),post.getDescripcion(),R.drawable.perro4));
                  //   Toast.makeText(getContext(),"Codigo: "+post.getNombre(),Toast.LENGTH_SHORT).show();

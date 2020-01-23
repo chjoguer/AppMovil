@@ -135,7 +135,6 @@ public class MasoctaAdopcionFormularioFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Mascota>> call, Response<List<Mascota>> response) {
                 if(!response.isSuccessful()){
-                    Toast.makeText(getContext(),"Codigo: "+response.code(),Toast.LENGTH_SHORT).show();
                     return;
                 }
                 List<Mascota> mascotas = response.body();
